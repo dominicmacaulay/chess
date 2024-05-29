@@ -44,12 +44,13 @@ class Pawn
     end
 end
 class Rook
-    attr_accessor :color, :name, :position, :move_set
+    attr_accessor :color, :name, :position, :move_set, :unmoved
     def initialize(color, position)
         @color = color
         @name = "#{color}r"
         @position = position
         @move_set = [[0,1],[0,-1],[1,0],[-1,0]]
+        @unmoved = true
     end
     def validate_move(move, board, move_piece = false)
         @move_set.each do |coords|
@@ -57,7 +58,10 @@ class Rook
             while 0 == 0
                 if temp_position == move
                     unless board[temp_position[0]][temp_position[1]]&.color == @color
-                        @position = temp_position if move_piece == true
+                        if move_piece == true
+                            @position = temp_position 
+                            @unmoved = false
+                        end
                         return true
                     end
                     return false
@@ -120,19 +124,23 @@ class Bishop
     end
 end
 class King
-    attr_accessor :color, :name, :position, :move_set
+    attr_accessor :color, :name, :position, :move_set, :unmoved
     def initialize(color, position)
         @color = color
         @name = "#{color}K"
         @position = position
         @move_set = [[1,-1],[1,1],[-1,1],[-1,-1],[0,1],[0,-1],[1,0],[-1,0]]
+        @unmoved = true
     end
     def validate_move(move, board, move_piece = false)
         @move_set.each do |coords|
             temp_position = [(@position[0] + coords[0]),(@position[1] + coords[1])]
             if temp_position[0].between?(0,7) && temp_position[1].between?(0,7) && temp_position == move
                 unless board[temp_position[0]][temp_position[1]]&.color == @color
-                    @position = temp_position if move_piece == true
+                    if move_piece == true
+                        @position = temp_position 
+                        @unmoved = false
+                    end
                     return true
                 end
                 return false

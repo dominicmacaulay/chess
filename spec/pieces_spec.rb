@@ -97,6 +97,7 @@ RSpec.describe Rook do
             expect(test.color).to eql("w")
             expect(test.name).to eql("wr")
             expect(test.position).to eql([0,1])
+            expect(test.unmoved).to eql(true)
             move_set = [[0,1],[0,-1],[1,0],[-1,0]]
             expect(test.move_set).to eql(move_set)
         end
@@ -106,6 +107,7 @@ RSpec.describe Rook do
         test = Rook.new("w", [0,0])
         it "validates a move forward and moves" do
             expect(test.validate_move([0,2],board,true)).to be true
+            expect(test.unmoved).to eql(false)
             expect(test.position).to eql([0,2])
         end
         it "validates taking an enemy" do
@@ -114,6 +116,7 @@ RSpec.describe Rook do
         end
         it "validates but doesn't move" do
             expect(test.validate_move([0,2],board,false)).to be true
+            expect(test.unmoved).to eql(false)
             expect(test.position).to eql([0,3])
         end
     end
@@ -216,6 +219,7 @@ RSpec.describe King do
             expect(test.color).to eql("w")
             expect(test.name).to eql("wK")
             expect(test.position).to eql([0,1])
+            expect(test.unmoved).to eql(true)
             move_set = [[1,-1],[1,1],[-1,1],[-1,-1],[0,1],[0,-1],[1,0],[-1,0]]
             expect(test.move_set).to eql(move_set)
         end
@@ -225,10 +229,12 @@ RSpec.describe King do
         test = King.new("w",[0,0])
         it "returns true but doesnt move for valid move" do
             expect(test.validate_move([0,1],board,false)).to be true
+            expect(test.unmoved).to eql(true)
             expect(test.position).to eql([0,0])
         end
         it "returns true and moves to take an enemy" do
             expect(test.validate_move([1,1],board,true)).to be true
+            expect(test.unmoved).to eql(false)
             expect(test.position).to eql([1,1])
         end
     end

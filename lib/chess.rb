@@ -85,7 +85,6 @@ class Game
             display_board(@player)
             puts "#{@player.capitalize} player's turn"
             puts "You are in check" if @king_check == true
-            ask_save_game
             # use a method to get the player's input
             input = get_input
             # ensure that the player has chosen one of their pieces and then make sure that the move is valid
@@ -103,6 +102,8 @@ class Game
             if check(@player) == true
                 @king_check = true
             end
+            # ask to save the game
+            ask_save_game
         end
         display_board(@player)
         @player == "white" ? player2 = "black" : player2 = "white"
@@ -298,18 +299,3 @@ class Game
         YAML.safe_load(File.read('./saved_game.yml'), permitted_classes: [Game, Rook, Knight, Bishop, King, Queen, Pawn], aliases: true)
     end
 end
-
-def game_menu
-    puts "Welcome to Chess"
-    puts "To load a game, type 'load game' and press enter"
-    puts "To start a new game, just press enter"
-    choice = gets.chomp.downcase
-    if choice == "load game"
-        this_game = Game.load_game
-    else
-        this_game = Game.new
-    end
-    this_game.game_loop
-end
-
-# game_menu
