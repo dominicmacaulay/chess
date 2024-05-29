@@ -289,6 +289,7 @@ class Game
         input = gets.chomp
         if input.downcase == "yes"
             save_game
+            puts "Game saved"
         end
     end
     # YAML save and load methods
